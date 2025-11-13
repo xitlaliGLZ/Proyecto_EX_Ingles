@@ -1,0 +1,55 @@
+{% extends 'liberacion/base.html' %}
+{% block title %}Solicitud de Liberación{% endblock %}
+
+{% block content %}
+  <div class="card-custom mx-auto" style="max-width: 700px;">
+    <h2 class="text-center mb-4 text-primary">Formulario de Solicitud</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_nombre" class="form-label">Nombre:</label>
+        {{ form.nombre }}
+      </div>
+      <div class="mb-3">
+        <label for="id_matricula" class="form-label">Matrícula:</label>
+        {{ form.matricula }}
+      </div>
+      <div class="mb-3">
+        <label for="id_nivel_ingles" class="form-label">Nivel inglés:</label>
+        {{ form.nivel_ingles }}
+      </div>
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-personalizado">Enviar Solicitud</button>
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Volver al Inicio</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="mt-5">
+    <h4 class="text-white">¿Qué incluye tu solicitud?</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Nombre</td>
+            <td>Tu nombre completo como aparece en el sistema</td>
+          </tr>
+          <tr>
+            <td>Matrícula</td>
+            <td>Tu número de control institucional</td>
+          </tr>
+          <tr>
+            <td>Nivel inglés</td>
+            <td>El nivel que deseas liberar (I, II, III, etc.)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

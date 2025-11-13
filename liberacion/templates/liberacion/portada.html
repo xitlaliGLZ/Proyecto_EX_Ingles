@@ -1,0 +1,66 @@
+{% extends 'liberacion/base.html' %}
+{% load static %}
+{% block title %}Bienvenido – Liberación de Inglés{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root {
+    --azul-principal: #0056b3;
+    --azul-oscuro: #003366;
+    --gris-claro: #f8f9fa;
+    --blanco: #ffffff;
+  }
+
+  body {
+    background-color: var(--gris-claro);
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .navbar {
+    background-color: var(--azul-principal);
+  }
+
+  .navbar-brand img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--blanco);
+  }
+
+  .hero-box {
+    background-color: var(--blanco);
+    border: 2px solid var(--azul-principal);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .btn-personalizado {
+    background-color: var(--azul-principal);
+    color: var(--blanco);
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-personalizado:hover {
+    background-color: var(--azul-oscuro);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <div class="hero-box text-center">
+      <img src="{% static 'liberacion/logo.png' %}" alt="Logo" class="logo-centro">
+      <img src="{% static 'liberacion/myenglishlap.png' %}" alt="Logo MyEnglishLap" class="logo-myenglishlap">
+
+      <h1 class="mb-4 text-primary">Bienvenido al sistema de liberación de inglés</h1>
+      <p class="lead mb-4">Para continuar, inicia sesión o crea una cuenta institucional.</p>
+      <a href="{% url 'login' %}" class="btn btn-personalizado me-2">Iniciar sesión</a>
+      <a href="{% url 'registro' %}" class="btn btn-outline-dark">Registrarse</a>
+    </div>
+  </div>
+{% endblock %}
+

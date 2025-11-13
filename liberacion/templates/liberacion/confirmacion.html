@@ -1,0 +1,10 @@
+{% extends 'liberacion/base.html' %}
+{% block title %}Confirmación{% endblock %}
+{% block content %}
+  <div class="text-center">
+    <h2 class="text-success">¡Solicitud enviada con éxito!</h2>
+    <p class="lead">Tu información ha sido registrada. Puedes acudir a control escolar para recibir tu constancia.</p>
+    <a href="{% url 'home' %}" class="btn btn-outline-success mt-3">Volver al inicio</a>
+  </div>
+{% endblock %}
+

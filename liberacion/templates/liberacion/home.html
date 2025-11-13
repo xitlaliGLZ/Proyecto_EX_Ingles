@@ -1,0 +1,41 @@
+
+
+{% extends 'liberacion/base.html' %}
+{% load static %}
+{% block title %}Inicio – Liberación de Inglés{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <div class="hero-box text-center">
+      <img src="{% static 'liberacion/logo.png' %}" alt="Logo" class="logo-centro">
+
+
+      <h1 class="mb-4 text-primary">Bienvenido al sistema de liberación de inglés</h1>
+
+      {% if user.is_authenticated %}
+        {% if user.is_staff %}
+          <p class="lead mb-4">Accede al panel administrativo para revisar las solicitudes de liberación.</p>
+          <a href="{% url 'panel' %}" class="btn btn-personalizado btn-lg">Ir al Panel Administrativo</a>
+          <br><br>
+          <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>
+          </form>
+        {% elif user.estudiante %}
+          <p class="lead mb-2"><strong>Nombre:</strong> {{ user.estudiante.nombre }}</p>
+          <p class="lead mb-2"><strong>Matrícula:</strong> {{ user.estudiante.matricula }}</p>
+          <p class="lead mb-4"><strong>Nivel de inglés:</strong> {{ user.estudiante.nivel_ingles }}</p>
+          <a href="{% url 'solicitar' %}" class="btn btn-personalizado btn-lg">Solicitar Liberación</a>
+          <br><br>
+          <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>
+          </form>
+        {% endif %}
+      {% else %}
+        <p class="lead mb-4">Solicita tu liberación del curso de inglés de forma rápida y sin complicaciones.</p>
+        <a href="{% url 'login' %}" class="btn btn-personalizado btn-lg">Inicia sesión para continuar</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

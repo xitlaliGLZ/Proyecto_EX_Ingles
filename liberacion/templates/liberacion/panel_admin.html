@@ -1,0 +1,57 @@
+{% extends 'liberacion/base.html' %}
+{% block title %}Panel Administrativo{% endblock %}
+
+{% block content %}
+  <div class="card-custom">
+    <h2 class="text-primary mb-4 text-center">Solicitudes Recibidas</h2>
+
+    {% if estudiantes %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="table-primary text-center">
+            <tr>
+              <th>Usuario</th>
+              <th>Correo</th>
+              <th>Nombre</th>
+              <th>Matrícula</th>
+              <th>Nivel Inglés</th>
+              <th>Fecha de Registro</th>
+              <th>Acciones</th>  <!-- ✅ Nueva columna -->
+            </tr>
+          </thead>
+          <tbody>
+            {% for estudiante in estudiantes %}
+              <tr>
+                <td>{{ estudiante.usuario.username }}</td>
+                <td>{{ estudiante.usuario.email }}</td>
+                <td>{{ estudiante.nombre }}</td>
+                <td>{{ estudiante.matricula }}</td>
+                <td>{{ estudiante.nivel_ingles }}</td>
+                <td>{{ estudiante.created_at|date:"d/m/Y H:i" }}</td>
+                <td class="text-center">
+                  <form method="post" action="{% url 'eliminar_solicitud' estudiante.id %}" onsubmit="return confirm('¿Estás segura de eliminar esta solicitud?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                    
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-center text-white">No hay solicitudes registradas aún.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger">Cerrar sesión</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+
+

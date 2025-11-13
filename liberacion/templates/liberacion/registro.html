@@ -1,0 +1,56 @@
+{% extends 'liberacion/base.html' %}
+{% block title %}Registro de usuario{% endblock %}
+
+{% block content %}
+  <div class="card-custom mx-auto" style="max-width: 600px;">
+    <h2 class="text-center text-primary mb-4">Crear cuenta institucional</h2>
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <strong>Revisa los campos:</strong>
+        <ul class="mb-0">
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'registro' %}" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_username" class="form-label">Usuario</label>
+        {{ form.username }}
+      </div>
+      <div class="mb-3">
+        <label for="id_email" class="form-label">Correo institucional</label>
+        {{ form.email }}
+      </div>
+      <div class="mb-3">
+        <label for="id_password" class="form-label">Contraseña</label>
+        {{ form.password }}
+      </div>
+      <div class="mb-3">
+        <label for="id_nombre" class="form-label">Nombre completo</label>
+        {{ form.nombre }}
+      </div>
+      <div class="mb-3">
+        <label for="id_matricula" class="form-label">Matrícula</label>
+        {{ form.matricula }}
+      </div>
+      <div class="mb-3">
+        <label for="id_nivel_ingles" class="form-label">Nivel de inglés</label>
+        {{ form.nivel_ingles }}
+      </div>
+      <button type="submit" class="btn btn-personalizado w-100 mt-3">Registrarse</button>
+    </form>
+
+    <p class="text-center mt-3">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+  </div>
+{% endblock %}
+
