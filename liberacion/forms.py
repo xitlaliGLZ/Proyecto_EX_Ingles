@@ -54,9 +54,19 @@ class RegistroForm(forms.ModelForm):
 class EstudianteForm(forms.ModelForm):
     class Meta:
         model = Estudiante
-        fields = ['nombre', 'matricula', 'nivel_ingles']
+        fields = ['nombre', 'matricula', 'nivel_ingles', 'boleta']
         labels = {
             'nombre': 'Nombre completo',
             'matricula': 'Matrícula',
             'nivel_ingles': 'Nivel de inglés',
+            'boleta': 'Boleta de inglés (PDF o imagen)',
         }
+
+    def clean_boleta(self):
+        boleta = self.cleaned_data.get('boleta')
+        if boleta:
+            valid_extensions = ['pdf', 'jpg', 'jpeg', 'png']
+            extension = boleta.name.split('.')[-1].lower()
+            if extension not in valid_extensions:
+                raise ValidationError("Solo se permiten archivos PDF o imágenes (JPG, PNG).")
+        return boleta

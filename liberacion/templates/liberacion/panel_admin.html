@@ -15,8 +15,9 @@
               <th>Nombre</th>
               <th>Matrícula</th>
               <th>Nivel Inglés</th>
+              <th>Boleta</th> <!-- ✅ Nueva columna -->
               <th>Fecha de Registro</th>
-              <th>Acciones</th>  <!-- ✅ Nueva columna -->
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -27,12 +28,19 @@
                 <td>{{ estudiante.nombre }}</td>
                 <td>{{ estudiante.matricula }}</td>
                 <td>{{ estudiante.nivel_ingles }}</td>
+                <!-- ✅ Nueva celda para mostrar la boleta -->
+                <td class="text-center">
+                  {% if estudiante.boleta %}
+                    <a href="{{ estudiante.boleta.url }}" target="_blank" class="btn btn-sm btn-info">Ver Boleta</a>
+                  {% else %}
+                    <span class="text-muted">No adjuntada</span>
+                  {% endif %}
+                </td>
                 <td>{{ estudiante.created_at|date:"d/m/Y H:i" }}</td>
                 <td class="text-center">
                   <form method="post" action="{% url 'eliminar_solicitud' estudiante.id %}" onsubmit="return confirm('¿Estás segura de eliminar esta solicitud?');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                    
                   </form>
                 </td>
               </tr>
@@ -52,6 +60,7 @@
     </div>
   </div>
 {% endblock %}
+
 
 
 

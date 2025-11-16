@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test, login_required
 from .models import Estudiante
-from .forms import RegistroForm, EstudianteForm  # ← Asegúrate de importar EstudianteForm
+from .forms import RegistroForm, EstudianteForm
 
 def portada(request):
     if request.user.is_authenticated:
@@ -12,11 +12,11 @@ def portada(request):
 @login_required
 def redireccion_rol(request):
     if request.user.is_staff:
-        return redirect('panel')  # ← Panel para administradores
+        return redirect('panel')  # Panel para administradores
     elif hasattr(request.user, 'estudiante'):
-        return redirect('home')   # ← Página para estudiantes
+        return redirect('home')   # Página para estudiantes
     else:
-        return redirect('portada')  # ← Por si no tiene rol definido
+        return redirect('portada')  # Por si no tiene rol definido
 
 @login_required
 def home(request):
@@ -24,9 +24,10 @@ def home(request):
 
 @login_required
 def solicitar_liberacion(request):
-    estudiante = request.user.estudiante  # ← Accede al estudiante vinculado al usuario
+    estudiante = request.user.estudiante
     if request.method == 'POST':
-        form = EstudianteForm(request.POST, instance=estudiante)
+        # ✅ Agregamos request.FILES para manejar archivos
+        form = EstudianteForm(request.POST, request.FILES, instance=estudiante)
         if form.is_valid():
             form.save()
             return redirect('confirmacion')
@@ -50,9 +51,10 @@ def eliminar_solicitud(request, estudiante_id):
 
 def registro(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        # ✅ Agregamos request.FILES aquí también
+        form = RegistroForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()  # ← Ya guarda el usuario y el estudiante
+            user = form.save()
             login(request, user)
             return redirect('home')
     else:

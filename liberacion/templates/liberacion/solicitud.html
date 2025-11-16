@@ -4,7 +4,8 @@
 {% block content %}
   <div class="card-custom mx-auto" style="max-width: 700px;">
     <h2 class="text-center mb-4 text-primary">Formulario de Solicitud</h2>
-    <form method="post">
+    <!-- ✅ Se agrega enctype para permitir subida de archivos -->
+    <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="mb-3">
         <label for="id_nombre" class="form-label">Nombre:</label>
@@ -18,6 +19,15 @@
         <label for="id_nivel_ingles" class="form-label">Nivel inglés:</label>
         {{ form.nivel_ingles }}
       </div>
+      <!-- ✅ Nuevo campo para subir la boleta -->
+      <div class="mb-3">
+        <label for="id_boleta" class="form-label">Boleta de inglés (PDF o imagen):</label>
+        {{ form.boleta }}
+        <small class="form-text text-muted">
+          Solo se permiten archivos PDF o imágenes (JPG, PNG).
+        </small>
+      </div>
+
       <div class="d-grid gap-2">
         <button type="submit" class="btn btn-personalizado">Enviar Solicitud</button>
         <a href="{% url 'home' %}" class="btn btn-outline-secondary">Volver al Inicio</a>
@@ -47,6 +57,11 @@
           <tr>
             <td>Nivel inglés</td>
             <td>El nivel que deseas liberar (I, II, III, etc.)</td>
+          </tr>
+          <!-- ✅ Nueva fila para explicar la boleta -->
+          <tr>
+            <td>Boleta</td>
+            <td>Archivo PDF o imagen que demuestra que completaste los 6 niveles de inglés</td>
           </tr>
         </tbody>
       </table>

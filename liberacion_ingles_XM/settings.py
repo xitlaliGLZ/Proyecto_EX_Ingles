@@ -74,3 +74,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'               # ← Obligatorio para que @login_required funcione
 LOGIN_REDIRECT_URL = '/redirigir/'  # ← Después de login, redirige según el rol
 LOGOUT_REDIRECT_URL = '/login/'     # ← Después de logout, regresa al login
+
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

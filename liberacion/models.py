@@ -8,6 +8,8 @@ class Estudiante(models.Model):
     nivel_ingles = models.CharField(max_length=50)
     fecha_liberacion = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    boleta = models.FileField(upload_to='boletas/', null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.nombre} ({self.matricula})"
