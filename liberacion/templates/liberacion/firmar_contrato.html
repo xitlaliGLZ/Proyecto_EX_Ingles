@@ -1,0 +1,42 @@
+{% extends 'liberacion/base.html' %}
+{% block title %}Firma de Contrato{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-primary">Firma de Contrato Inteligente</h2>
+    <p class="text-center">Este contrato representa tu solicitud de liberación de inglés. Al firmarlo, autorizas su registro en la blockchain.</p>
+
+    <!-- Mostrar datos del estudiante -->
+    <div class="card p-3 mb-4">
+        <pre>
+Contrato de Liberación de Inglés
+Estudiante: {{ user.estudiante.nombre }}
+Matrícula: {{ user.estudiante.matricula }}
+Nivel: {{ user.estudiante.nivel_ingles }}
+Fecha: {{ fecha_actual }}
+Boleta: [Hash generado]
+        </pre>
+    </div>
+
+    <!-- Botón de firma -->
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-success">Firmar Contrato</button>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Volver al Inicio</a>
+        </div>
+    </form>
+
+    <!-- ✅ Nuevo botón para generar/descargar PDF -->
+    <div class="d-grid gap-2 mt-3">
+        <a href="{% url 'contrato_pdf' %}" target="_blank" class="btn btn-warning">Descargar Contrato en PDF</a>
+    </div>
+
+    <!-- Mensaje de confirmación -->
+    {% if mensaje %}
+    <div class="alert alert-success mt-3">
+        {{ mensaje }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

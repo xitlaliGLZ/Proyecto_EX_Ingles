@@ -16,6 +16,7 @@
               <th>Matrícula</th>
               <th>Nivel Inglés</th>
               <th>Boleta</th> <!-- ✅ Nueva columna -->
+              <th>Firma</th> <!-- ✅ Nueva columna para mostrar estado de firma -->
               <th>Fecha de Registro</th>
               <th>Acciones</th>
             </tr>
@@ -36,11 +37,27 @@
                     <span class="text-muted">No adjuntada</span>
                   {% endif %}
                 </td>
+                <!-- ✅ Nueva celda para mostrar estado de firma -->
+                <td class="text-center">
+                  {% if estudiante.firmado %}
+                    ✅ Firmado <br>
+                    <small>{{ estudiante.fecha_firma|date:"d/m/Y H:i" }}</small>
+                  {% else %}
+                    ❌ No firmado
+                  {% endif %}
+                </td>
                 <td>{{ estudiante.created_at|date:"d/m/Y H:i" }}</td>
                 <td class="text-center">
-                  <form method="post" action="{% url 'eliminar_solicitud' estudiante.id %}" onsubmit="return confirm('¿Estás segura de eliminar esta solicitud?');">
+                  <!-- Botón para eliminar -->
+                  <form method="post" action="{% url 'eliminar_solicitud' estudiante.id %}" style="display:inline;" onsubmit="return confirm('¿Estás segura de eliminar esta solicitud?');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                  </form>
+
+                  <!-- ✅ Nuevo botón para firmar contrato desde el panel admin -->
+                  <form method="post" action="{% url 'firmar_contrato_admin' estudiante.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-success">Firmar Contrato</button>
                   </form>
                 </td>
               </tr>
@@ -60,6 +77,7 @@
     </div>
   </div>
 {% endblock %}
+
 
 
 

@@ -21,15 +21,18 @@
       </div>
       <!-- ✅ Nuevo campo para subir la boleta -->
       <div class="mb-3">
-        <label for="id_boleta" class="form-label">Boleta de inglés (PDF o imagen):</label>
+        <label for="id_boleta" class="form-label">Boleta de inglés (PDF):</label>
         {{ form.boleta }}
         <small class="form-text text-muted">
-          Solo se permiten archivos PDF o imágenes (JPG, PNG).
+          Solo se permiten archivos PDF.
         </small>
       </div>
 
       <div class="d-grid gap-2">
+        <!-- Botón para enviar solicitud -->
         <button type="submit" class="btn btn-personalizado">Enviar Solicitud</button>
+        
+        <!-- Botón para volver al inicio -->
         <a href="{% url 'home' %}" class="btn btn-outline-secondary">Volver al Inicio</a>
       </div>
     </form>
@@ -61,10 +64,12 @@
           <!-- ✅ Nueva fila para explicar la boleta -->
           <tr>
             <td>Boleta</td>
-            <td>Archivo PDF o imagen que demuestra que completaste los 6 niveles de inglés</td>
+            <td>Archivo PDF</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 {% endblock %}
+
+

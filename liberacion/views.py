@@ -3,6 +3,54 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test, login_required
 from .models import Estudiante
 from .forms import RegistroForm, EstudianteForm
+from django.utils import timezone
+from django.http import HttpResponse
+from django.template.loader import get_template
+import io
+from xhtml2pdf import pisa
+import os
+from django.conf import settings
+
+def firmar_contrato_admin(request, id):
+    estudiante = get_object_or_404(Estudiante, id=id)
+    if request.method == 'POST':
+        estudiante.firmado = True
+        estudiante.fecha_firma = timezone.now()
+        estudiante.save()
+        # ✅ Después de firmar, redirige al panel admin
+        return redirect('panel_admin')
+    
+def contrato_pdf(request):
+    estudiante = request.user.estudiante
+    template_path = 'liberacion/contrato_pdf.html'
+    context = {
+        'nombre': estudiante.nombre,
+        'matricula': estudiante.matricula,
+        'nivel': estudiante.nivel_ingles,
+        'fecha_actual': estudiante.fecha_firma or ''
+    }
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # ✅ Crear carpeta de destino si no existe
+    output_dir = os.path.join(settings.MEDIA_ROOT, 'contratos')
+    os.makedirs(output_dir, exist_ok=True)
+
+    # ✅ Nombre del archivo con la matrícula
+    filename = f"{estudiante.matricula}.pdf"
+    file_path = os.path.join(output_dir, filename)
+
+    # ✅ Guardar el PDF en archivo
+    with open(file_path, "wb") as f:
+        pisa_status = pisa.CreatePDF(io.BytesIO(html.encode("UTF-8")), dest=f)
+
+    # ✅ También devolverlo al navegador
+    with open(file_path, "rb") as f:
+        response = HttpResponse(f.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response
+
 
 def portada(request):
     if request.user.is_authenticated:
@@ -60,3 +108,18 @@ def registro(request):
     else:
         form = RegistroForm()
     return render(request, 'liberacion/registro.html', {'form': form})
+
+def firmar_contrato(request):
+    estudiante = get_object_or_404(Estudiante, usuario=request.user)
+    if request.method == 'POST':
+        estudiante.firmado = True
+        estudiante.fecha_firma = timezone.now()
+        estudiante.save()
+        mensaje = "Tu firma ha sido registrada correctamente."
+        return render(request, 'liberacion/firmar_contrato.html', {
+            'mensaje': mensaje,
+            'fecha_actual': estudiante.fecha_firma
+        })
+    return render(request, 'liberacion/firmar_contrato.html', {
+        'fecha_actual': timezone.now()
+    })
